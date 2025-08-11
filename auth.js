@@ -1,72 +1,115 @@
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import {
-  getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged,
-  signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
+// ===== Firebase Config =====
 const firebaseConfig = {
-  apiKey: "AIzaSyDaec3LNWAdKqgsXn4q1cu2u3z0QsumlNs",
+  apiKey: "AIzaSyDaec3LnWAKdgqsXn4q1cu2u3z0QsumLNs",
   authDomain: "bo3-mod-tool-helper.firebaseapp.com",
   projectId: "bo3-mod-tool-helper",
   storageBucket: "bo3-mod-tool-helper.appspot.com",
-  messagingSenderId: "229956627103",
-  appId: "1:229956627103:web:9142ca7015e058aa2010aa",
-  measurementId: "G-LDHQK9YSMX"
+  messagingSenderId: "YOUR_MESSAGING_ID",
+  appId: "YOUR_APP_ID"
 };
 
+// Init Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+console.log('Firebase initialized');
 
 // Keep user logged in
 setPersistence(auth, browserLocalPersistence);
 
-// Redirect if already logged in
-onAuthStateChanged(auth, (user) => {
-  if (user && location.pathname.endsWith("login.html")) {
-    location.href = "index.html";
+// ===== LOGIN =====
+window.login = function () {
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
+
+  if (!email || !password) {
+    alert("Please fill in all fields.");
+    return;
   }
-});
 
-const msg = (e) => alert(e?.message || e);
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Logged in successfully!");
+      window.location.href = "index.html";
+    })
+    .catch(error => {
+      alert(error.message);
+    });
+};
 
-// REGISTER
-const registerBtn = document.getElementById("registerBtn");
-if (registerBtn) {
-  registerBtn.addEventListener("click", async () => {
-    const email = document.getElementById("registerEmail").value.trim();
-    const password = document.getElementById("registerPassword").value;
-    if (!email || !password) return msg("Please fill in email and password.");
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert("Account created! You can now log in.");
-      location.href = "login.html";
-    } catch (err) { msg(err); }
-  });
-}
+// ===== REGISTER =====
+window.register = function () {
+  const email = document.getElementById("register-email").value;
+  const password = document.getElementById("register-password").value;
 
-// LOGIN
-const loginBtn = document.getElementById("loginBtn");
-if (loginBtn) {
-  loginBtn.addEventListener("click", async () => {
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
-      location.href = "index.html";
-    } catch (err) { msg(err); }
-  });
-}
+  if (!email || !password) {
+    alert("Please fill in all fields.");
+    return;
+  }
 
-// RESET PASSWORD
-const resetBtn = document.getElementById("resetBtn");
-if (resetBtn) {
-  resetBtn.addEventListener("click", async () => {
-    const email = document.getElementById("resetEmail").value.trim();
-    if (!email) return msg("Enter your email first.");
-    try {
-      await sendPasswordResetEmail(auth, email);
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Account created successfully!");
+      window.location.href = "login.html";
+    })
+    .catch(error => {
+      alert(error.message);
+    });
+};
+
+// ===== FORGOT PASSWORD =====
+window.resetPassword = function () {
+  const email = document.getElementById("forgot-email").value;
+
+  if (!email) {
+    alert("Please enter your email.");
+    return;
+  }
+
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
       alert("Password reset email sent!");
-    } catch (err) { msg(err); }
+    })
+    .catch(error => {
+      alert(error.message);
+    });
+};
+
+// ===== LOGOUT =====
+window.logout = function () {
+  signOut(auth).then(() => {
+    alert("Logged out.");
+    window.location.href = "index.html";
   });
-}
+};
+
+// ===== SHOW USER INFO =====
+window.showUserInfo = function () {
+  const userDisplay = document.getElementById("user-info");
+  if (!userDisplay) return;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userDisplay.textContent = `Welcome, ${user.email}`;
+    } else {
+      userDisplay.textContent = "";
+    }
+  });
+};
+
+// Run user info check on load if element exists
+window.addEventListener("DOMContentLoaded", () => {
+  showUserInfo();
+});
