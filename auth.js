@@ -1,4 +1,3 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import {
   getAuth,
@@ -8,8 +7,15 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  updateProfile,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
 
 // ===== Firebase Config =====
 const firebaseConfig = {
@@ -24,28 +30,22 @@ const firebaseConfig = {
 // Init Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-console.log('Firebase initialized');
+const storage = getStorage(app);
 
-// Keep user logged in
 setPersistence(auth, browserLocalPersistence);
 
 // ===== LOGIN =====
 window.login = function () {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
-
-  if (!email || !password) {
-    alert("Please fill in all fields.");
-    return;
-  }
+  document.getElementById("login-status").textContent = "Logging in...";
 
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
-      alert("Logged in successfully!");
-      window.location.href = "index.html";
+      window.location.href = "index.html"; // CHANGE THIS to your real homepage filename
     })
     .catch(error => {
-      alert(error.message);
+      document.getElementById("login-status").textContent = error.message;
     });
 };
 
@@ -53,63 +53,69 @@ window.login = function () {
 window.register = function () {
   const email = document.getElementById("register-email").value;
   const password = document.getElementById("register-password").value;
-
-  if (!email || !password) {
-    alert("Please fill in all fields.");
-    return;
-  }
+  const displayName = document.getElementById("register-name").value;
+  document.getElementById("register-status").textContent = "Creating account...";
 
   createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      alert("Account created successfully!");
-      window.location.href = "login.html";
+    .then(userCredential => {
+      updateProfile(userCredential.user, { displayName: displayName });
+      window.location.href = "index.html"; // CHANGE THIS to your real homepage filename
     })
     .catch(error => {
-      alert(error.message);
+      document.getElementById("register-status").textContent = error.message;
     });
 };
 
-// ===== FORGOT PASSWORD =====
+// ===== RESET PASSWORD =====
 window.resetPassword = function () {
   const email = document.getElementById("forgot-email").value;
-
-  if (!email) {
-    alert("Please enter your email.");
-    return;
-  }
+  document.getElementById("reset-status").textContent = "Sending reset email...";
 
   sendPasswordResetEmail(auth, email)
     .then(() => {
-      alert("Password reset email sent!");
+      document.getElementById("reset-status").textContent = "Password reset email sent!";
     })
     .catch(error => {
-      alert(error.message);
+      document.getElementById("reset-status").textContent = error.message;
     });
+};
+
+// ===== LOAD DASHBOARD =====
+window.loadDashboard = function () {
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("user-email").textContent = user.email;
+      document.getElementById("user-name").textContent = user.displayName || "New Player";
+      if (user.photoURL) {
+        document.getElementById("profile-pic").src = user.photoURL;
+      } else {
+        document.getElementById("profile-pic").src = "default-avatar.png";
+      }
+    }
+  });
+};
+
+// ===== UPDATE PROFILE PICTURE =====
+window.uploadProfilePic = function () {
+  const file = document.getElementById("profile-upload").files[0];
+  if (!file) return alert("Select a file first.");
+  const user = auth.currentUser;
+  const storageRef = ref(storage, 'profile-pictures/' + user.uid);
+
+  uploadBytes(storageRef, file).then(() => {
+    getDownloadURL(storageRef).then(url => {
+      updateProfile(user, { photoURL: url }).then(() => {
+        document.getElementById("profile-pic").src = url;
+      });
+    });
+  });
 };
 
 // ===== LOGOUT =====
 window.logout = function () {
   signOut(auth).then(() => {
-    alert("Logged out.");
-    window.location.href = "index.html";
+    window.location.href = "login.html";
   });
 };
-
-// ===== SHOW USER INFO =====
-window.showUserInfo = function () {
-  const userDisplay = document.getElementById("user-info");
-  if (!userDisplay) return;
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      userDisplay.textContent = `Welcome, ${user.email}`;
-    } else {
-      userDisplay.textContent = "";
-    }
-  });
-};
-
-// Run user info check on load if element exists
-window.addEventListener("DOMContentLoaded", () => {
-  showUserInfo();
-});

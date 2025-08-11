@@ -1,73 +1,25 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Register - BO3 Mod Tool Helper</title>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles-login.css">
 <script type="module" src="auth.js"></script>
 </head>
-<body>
+<body onload="redirectIfLoggedIn()">
+<div class="form-container">
 
-<header>
-  <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
-    <h1>BO3 MOD TOOL HELPER</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="guides.html">Guides</a>
-      <a href="downloads.html">Downloads</a>
-      <a href="error-log.html">Error Log</a>
-      <a href="tutorials.html">Tutorials</a>
-      <a href="community.html">Community</a>
-      <a href="login.html">Login</a>
-    </nav>
-  </div>
-</header>
+    
+<h2>Create Account</h2>
+<input type="text" id="register-name" placeholder="Display Name" required>
+<input type="email" id="register-email" placeholder="Email" required>
+<input type="password" id="register-password" placeholder="Password (min 6 chars)" required>
+<button onclick="register()">Register</button>
+<p id="register-status" class="status-msg"></p>
+<p>Already have an account? <a href="login.html">Login</a></p>
 
-<section>
-  <div class="container">
-    <div class="form-container">
-      <h2>Create Account</h2>
-      <input type="email" id="register-email" id="registerEmail" placeholder="Email" required>
-      <input type="password" id="register-password" id="registerPassword" placeholder="Password (min 6 chars)" required>
-      <button type="button" onclick="register()" id="registerBtn">Register</button>
-      <p style="margin-top:10px;">
-        Already have an account? <a href="login.html" style="color:#ff6600;">Login</a>
-      </p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
-</footer>
-
-<script type="module">
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { auth } from './auth.js';
-
-document.getElementById("registerBtn").addEventListener("click", async () => {
-  const email = document.getElementById("registerEmail").value.trim();
-  const password = document.getElementById("registerPassword").value.trim();
-
-  if (!email || !password) {
-    alert("Please fill in all fields.");
-    return;
-  }
-  if (password.length < 6) {
-    alert("Password must be at least 6 characters.");
-    return;
-  }
-
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-    alert("Account created! You can now log in.");
-    window.location.href = "login.html";
-  } catch (err) {
-    alert(err.message);
-  }
-});
-</script>
-
+</div>
 </body>
 </html>

@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="auth.js"></script>
+</head>
+<body onload="loadDashboard()">
+
+<header>
+  <h1>User Dashboard</h1>
+  <button onclick="logout()">Logout</button>
+</header>
+
+<main>
+  <section>
+    <h2>Profile Info</h2>
+    <img id="profile-pic" src="" alt="Profile Picture" style="width:100px;height:100px;border-radius:50%;">
+    <input type="file" id="profile-upload">
+    <button onclick="uploadProfilePic()">Upload New Picture</button>
+    <p><strong>Name:</strong> <span id="user-name"></span></p>
+    <p><strong>Email:</strong> <span id="user-email"></span></p>
+  </section>
+</main>
+
+</body>
+</html>
