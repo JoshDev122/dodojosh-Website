@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Error Log - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="auth.js"></script>
+<style>
+/* Console-style log area */
+.log-console {
+  width: 100%;
+  height: 300px;
+  background: #0b0b0b;
+  color: #ccc;
+  border: 2px solid #ff6600;
+  padding: 10px;
+  font-family: monospace;
+  resize: vertical;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+/* Highlight styles */
+.error-highlight {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+.warning-highlight {
+  color: #ffcc00;
+  font-weight: bold;
+}
+.info-highlight {
+  color: #66ff66;
+}
+
+/* Live results panel */
+.results-panel {
+  margin-top: 15px;
+  background: #111;
+  border: 1px solid #ff6600;
+  padding: 10px;
+  border-radius: 4px;
+}
+.results-panel h3 {
+  color: #ff6600;
+  margin-bottom: 8px;
+}
+.results-panel p {
+  margin: 5px 0;
+}
+.results-panel a {
+  color: #ffcc00;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guides.html">Guides</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="error-log.html" class="active">Error Log</a>
+      <a href="tutorials.html">Tutorials</a>
+      <a href="community.html">Community</a>
+      <a href="login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>🛠 Advanced BO3 Error Log Analyzer</h2>
+    <p>Paste or type your compile log below — errors will be detected instantly.</p>
+
+    <textarea id="logInput" class="log-console" placeholder="Paste your BO3 compile log here..."></textarea>
+
+    <div id="logResults" class="results-panel">
+      <h3>Detected Issues</h3>
+      <p>Waiting for log input...</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>🚨 BO3 Error Fix Guides</h2>
+    <p>Click a guide below to view detailed solutions for common issues.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <h3>❌ Missing XModel</h3>
+        <p>Occurs when a referenced model isn’t loaded in your assets.</p>
+        <a class="btn" href="errors/missing-xmodel-fix.html">View Fix</a>
+      </div>
+
+      <div class="card">
+        <h3>⚠️ Script Parse Error</h3>
+        <p>Triggered by syntax errors in your GSC scripts.</p>
+        <a class="btn" href="errors/script-parse-error.html">View Fix</a>
+      </div>
+
+      <div class="card">
+        <h3>📄 Zone File Missing</h3>
+        <p>Happens when an asset isn’t listed in your map’s zone file.</p>
+        <a class="btn" href="errors/zone-file-missing.html">View Fix</a>
+      </div>
+
+      <div class="card">
+        <h3>💾 Memory Allocation Error</h3>
+        <p>Caused by exceeding the game’s memory limits.</p>
+        <a class="btn" href="errors/memory-allocation-error.html">View Fix</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from './auth.js';
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+  }
+});
+</script>
+
+<script>
+// Live log analysis
+const logInput = document.getElementById("logInput");
+const logResults = document.getElementById("logResults");
+
+logInput.addEventListener("input", () => {
+  const log = logInput.value.toLowerCase();
+  let output = "";
+  let found = false;
+
+  if (log.includes("xmodel")) {
+    output += `❌ Missing XModel detected — <a href="errors/missing-xmodel-fix.html">Fix here</a><br>`;
+    found = true;
+  }
+  if (log.includes("script compile error") || log.includes("parse error")) {
+    output += `⚠️ Script Parse Error detected — <a href="errors/script-parse-error.html">Fix here</a><br>`;
+    found = true;
+  }
+  if (log.includes("zone file") && log.includes("missing")) {
+    output += `📄 Zone File Missing detected — <a href="errors/zone-file-missing.html">Fix here</a><br>`;
+    found = true;
+  }
+  if (log.includes("memory")) {
+    output += `💾 Memory Allocation Error detected — <a href="errors/memory-allocation-error.html">Fix here</a><br>`;
+    found = true;
+  }
+
+  logResults.innerHTML = `<h3>Detected Issues</h3>${found ? output : "<p>✅ No known errors detected.</p>"}`;
+});
+</script>
+
+</body>
+</html>

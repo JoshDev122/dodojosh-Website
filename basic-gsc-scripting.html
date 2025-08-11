@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic GSC Scripting - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="../styles.css">
+<script type="module" src="../auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../guides.html" class="active">Guides</a>
+      <a href="../downloads.html">Downloads</a>
+      <a href="../error-log.html">Error Log</a>
+      <a href="../tutorials.html">Tutorials</a>
+      <a href="../community.html">Community</a>
+      <a href="../login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>💻 Basic GSC Scripting</h2>
+    <p>GSC (Game Script) is the scripting language used in BO3 for gameplay logic.</p>
+
+    <h3>Step 1 — Locate Your Script Folder</h3>
+    <p>Navigate to:  
+    <code>Call of Duty Black Ops III\usermaps\yourmap\scripts\zm</code></p>
+
+    <h3>Step 2 — Create a New Script</h3>
+    <ul>
+      <li>Create a new file named <code>_mytest.gsc</code>.</li>
+      <li>Open it in a text editor (e.g., Sublime Text, VS Code).</li>
+    </ul>
+
+    <h3>Step 3 — Write a Simple Function</h3>
+    <pre>
+#using scripts\zm\_zm_util;
+
+function init()
+{
+    IPrintLn("Hello from my script!");
+}
+    </pre>
+
+    <h3>Step 4 — Compile & Test</h3>
+    <ul>
+      <li>Reference your script in your map’s zone file.</li>
+      <li>Build your map in Launcher and test in-game.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from '../auth.js';
+
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.href = "#";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+    loginLink.href = "../login.html";
+    loginLink.onclick = null;
+  }
+});
+</script>
+
+</body>
+</html>

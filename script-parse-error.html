@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix: Script Parse Error - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="../styles.css">
+<script type="module" src="../auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../guides.html">Guides</a>
+      <a href="../error-log.html" class="active">Error Log</a>
+      <a href="../downloads.html">Downloads</a>
+      <a href="../tutorials.html">Tutorials</a>
+      <a href="../community.html">Community</a>
+      <a href="../login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>⚠️ Fix: Script Parse Error</h2>
+    <p>This occurs when your GSC script has invalid syntax.</p>
+
+    <h3>Solution</h3>
+    <ul>
+      <li>Check the compile log for the exact line causing the error.</li>
+      <li>Ensure all lines end with <code>;</code> where required.</li>
+      <li>Make sure all <code>{ }</code> brackets are matched correctly.</li>
+      <li>Check for missing function definitions or mismatched parameters.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from '../auth.js';
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+  }
+});
+</script>
+
+</body>
+</html>

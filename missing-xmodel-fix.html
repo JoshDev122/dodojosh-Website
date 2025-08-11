@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix: Missing XModel - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="../styles.css">
+<script type="module" src="../auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../guides.html">Guides</a>
+      <a href="../error-log.html" class="active">Error Log</a>
+      <a href="../downloads.html">Downloads</a>
+      <a href="../tutorials.html">Tutorials</a>
+      <a href="../community.html">Community</a>
+      <a href="../login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>❌ Fix: Missing XModel</h2>
+    <p>This error means the map references a model that isn’t loaded into your assets.</p>
+
+    <h3>Solution</h3>
+    <ol>
+      <li>Check the model name in the console or compile log.</li>
+      <li>Locate the model in Asset Manager or your mod’s asset list.</li>
+      <li>Add the model to your <code>zone_source</code> file:
+      <pre>xmodel,your_model_name</pre></li>
+      <li>Recompile your mod in BO3 Launcher.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from '../auth.js';
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+  }
+});
+</script>
+
+</body>
+</html>

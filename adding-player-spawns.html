@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adding Player Spawns - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="../styles.css">
+<script type="module" src="../auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../guides.html" class="active">Guides</a>
+      <a href="../downloads.html">Downloads</a>
+      <a href="../error-log.html">Error Log</a>
+      <a href="../tutorials.html">Tutorials</a>
+      <a href="../community.html">Community</a>
+      <a href="../login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>👤 Adding Player Spawns</h2>
+    <p>Player spawns define where players will start when your map loads.</p>
+
+    <h3>Step 1 — Open Your Map in Radiant</h3>
+    <p>Load your map in Radiant and ensure the grid and 3D viewport are visible.</p>
+
+    <h3>Step 2 — Create Spawn Points</h3>
+    <ul>
+      <li>Press <strong>N</strong> to open the entity window.</li>
+      <li>Select <code>info_player_start</code> (for SP/ZM) or <code>mp_spawn</code> (for MP).</li>
+      <li>Place the spawn point in a safe area of your map.</li>
+    </ul>
+
+    <h3>Step 3 — Rotate Spawn Direction</h3>
+    <p>Use the rotation tool (R key) to face the spawn point in the correct direction.</p>
+
+    <h3>Step 4 — Save & Compile</h3>
+    <p>Save your map and compile in BO3 Launcher. Test to ensure the player spawns correctly.</p>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from '../auth.js';
+
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.href = "#";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+    loginLink.href = "../login.html";
+    loginLink.onclick = null;
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Downloads - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guides.html">Guides</a>
+      <a href="downloads.html" class="active">Downloads</a>
+      <a href="error-log.html">Error Log</a>
+      <a href="tutorials.html">Tutorials</a>
+      <a href="community.html">Community</a>
+      <a href="login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>⬇ BO3 Modding Downloads</h2>
+    <p>Essential tools and files you’ll need for Radiant and BO3 modding.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <h3>📦 BO3 Mod Tools (Steam)</h3>
+        <p>Official Black Ops 3 Mod Tools from the Steam Workshop.</p>
+        <a class="btn" href="https://store.steampowered.com/app/455130/Call_of_Duty_Black_Ops_III__Mod_Tools/" target="_blank">Download</a>
+      </div>
+
+      <div class="card">
+        <h3>🎨 Radiant Prefab Pack</h3>
+        <p>Collection of prebuilt structures and props for faster mapping.</p>
+        <a class="btn" href="#" target="_blank">Download</a>
+      </div>
+
+      <div class="card">
+        <h3>🔫 Weapon Asset Pack</h3>
+        <p>Preconfigured weapon models for custom maps.</p>
+        <a class="btn" href="#" target="_blank">Download</a>
+      </div>
+
+      <div class="card">
+        <h3>🎵 Zombie Round Sounds</h3>
+        <p>Pack of round start, end, and ambient sounds for zombies mode.</p>
+        <a class="btn" href="#" target="_blank">Download</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from './auth.js';
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+  }
+});
+</script>
+
+</body>
+</html>

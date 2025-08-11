@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guides - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guides.html" class="active">Guides</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="error-log.html">Error Log</a>
+      <a href="tutorials.html">Tutorials</a>
+      <a href="community.html">Community</a>
+      <a href="login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>📚 Modding Guides</h2>
+    <p>Step-by-step tutorials to help you create custom maps and mods for BO3.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <h3>🧭 Navigating Radiant</h3>
+        <p>Learn how to move around and use the Radiant editor.</p>
+        <a class="btn" href="guides/navigating-radiant.html">Read Guide</a>
+      </div>
+
+      <div class="card">
+        <h3>👤 Adding Player Spawns</h3>
+        <p>Set up spawn points for players in your map.</p>
+        <a class="btn" href="guides/adding-player-spawns.html">Read Guide</a>
+      </div>
+
+      <div class="card">
+        <h3>💻 Basic GSC Scripting</h3>
+        <p>Write basic scripts to add gameplay logic.</p>
+        <a class="btn" href="guides/basic-gsc-scripting.html">Read Guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from './auth.js';
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+  }
+});
+</script>
+
+</body>
+</html>

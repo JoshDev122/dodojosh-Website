@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="auth.js"></script>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>BO3 MOD TOOL HELPER</h1>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="guides.html">Guides</a>
+            <a href="downloads.html">Downloads</a>
+            <a href="error-log.html">Error Log</a>
+            <a href="tutorials.html">Tutorials</a>
+            <a href="community.html">Community</a>
+            <a href="login.html" id="loginLink">Login</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <h2>Master BO3 Modding</h2>
+    <p>Your hub for guides, downloads, and tools to create the best Black Ops 3 mods and maps.</p>
+    <button class="btn" onclick="location.href='guides.html'">Get Started</button>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section>
+    <div class="container">
+        <h2>About This Site</h2>
+        <p>
+            The BO3 Mod Tool Helper provides everything you need to start creating maps and mods for Black Ops 3.  
+            Find detailed guides, essential downloads, and solutions to common modding errors.  
+            <br><br>
+            <strong style="color: red;">Disclaimer:</strong> All scripts, assets, and tools belong to their original creators.  
+            This site only collects and organizes resources for educational purposes.
+        </p>
+    </div>
+</section>
+
+<!-- ===== FEATURED GUIDES ===== -->
+<section>
+    <div class="container">
+        <h2>Featured Guides</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>🧭 Navigating Radiant</h3>
+                <p>Learn to navigate BO3's map editor efficiently.</p>
+                <a href="navigating-radiant.html" class="btn">Read More</a>
+            </div>
+            <div class="card">
+                <h3>👥 Adding Player Spawns</h3>
+                <p>Set up spawns for multiplayer and zombies maps.</p>
+                <a href="adding-player-spawns.html" class="btn">Read More</a>
+            </div>
+            <div class="card">
+                <h3>💻 Basic GSC Scripting</h3>
+                <p>Create custom gameplay logic with GSC scripting.</p>
+                <a href="basic-gsc-scripting.html" class="btn">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FEATURED DOWNLOADS ===== -->
+<section>
+    <div class="container">
+        <h2>Featured Downloads</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>Radiant Essentials Pack</h3>
+                <p>Everything you need to start creating maps.</p>
+                <a href="downloads.html" class="btn">Download</a>
+            </div>
+            <div class="card">
+                <h3>Starter Map Project</h3>
+                <p>Jump into modding with a pre-configured map project.</p>
+                <a href="downloads.html" class="btn">Download</a>
+            </div>
+            <div class="card">
+                <h3>Common Script Tools</h3>
+                <p>Essential scripts for faster modding workflow.</p>
+                <a href="downloads.html" class="btn">Download</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<!-- ===== LOGIN/LOGOUT HANDLER ===== -->
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from './auth.js';
+
+const loginLink = document.getElementById("loginLink");
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loginLink.textContent = "Logout";
+        loginLink.href = "#";
+        loginLink.onclick = () => {
+            signOut(auth).then(() => location.reload());
+        };
+    } else {
+        loginLink.textContent = "Login";
+        loginLink.href = "login.html";
+        loginLink.onclick = null;
+    }
+});
+</script>
+
+</body>
+</html>

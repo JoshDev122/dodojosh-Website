@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigating Radiant - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="../styles.css">
+<script type="module" src="../auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../guides.html" class="active">Guides</a>
+      <a href="../downloads.html">Downloads</a>
+      <a href="../error-log.html">Error Log</a>
+      <a href="../tutorials.html">Tutorials</a>
+      <a href="../community.html">Community</a>
+      <a href="../login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>🧭 Navigating Radiant</h2>
+    <p>This guide will walk you through the basics of navigating the Black Ops 3 Radiant map editor.</p>
+
+    <h3>Getting Started</h3>
+    <ul>
+      <li>Open Radiant via the BO3 Launcher (Map Editor).</li>
+      <li>Use <strong>Right Mouse Button</strong> to rotate the camera.</li>
+      <li>Use <strong>WASD</strong> keys to move around the 3D view.</li>
+      <li>Press <strong>Shift</strong> to move faster.</li>
+    </ul>
+
+    <h3>Viewport Controls</h3>
+    <p>You can switch between views using the toolbar at the top. Common views include:</p>
+    <ul>
+      <li>Perspective</li>
+      <li>Top-down Orthographic</li>
+      <li>Side Orthographic</li>
+      <li>Front Orthographic</li>
+    </ul>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Press <strong>G</strong> to toggle grid snapping.</li>
+      <li>Press <strong>Ctrl+Z</strong> to undo, <strong>Ctrl+Y</strong> to redo.</li>
+      <li>Use <strong>Spacebar</strong> to quickly focus on the selected object.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from '../auth.js';
+
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.href = "#";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+    loginLink.href = "../login.html";
+    loginLink.onclick = null;
+  }
+});
+</script>
+
+</body>
+</html>

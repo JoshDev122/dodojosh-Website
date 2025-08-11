@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorials - BO3 Mod Tool Helper</title>
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>BO3 MOD TOOL HELPER</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guides.html">Guides</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="error-log.html">Error Log</a>
+      <a href="tutorials.html" class="active">Tutorials</a>
+      <a href="community.html">Community</a>
+      <a href="login.html" id="loginLink">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>🎥 Video Tutorials & Step-by-Step Lessons</h2>
+    <p>Learn BO3 modding through in-depth video tutorials and example projects.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <h3>📹 Basic Mapping Workflow</h3>
+        <p>Video tutorial on creating your first playable BO3 map.</p>
+        <a class="btn" href="#" target="_blank">Watch</a>
+      </div>
+
+      <div class="card">
+        <h3>📜 Script Your First Zombie Round</h3>
+        <p>Step-by-step on adding custom zombie spawns and logic.</p>
+        <a class="btn" href="#" target="_blank">Watch</a>
+      </div>
+
+      <div class="card">
+        <h3>🔊 Adding Ambient Sounds</h3>
+        <p>Learn to implement background audio for immersion.</p>
+        <a class="btn" href="#" target="_blank">Watch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 BO3 Mod Tool Helper — All assets/scripts belong to their original creators.
+</footer>
+
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { auth } from './auth.js';
+const loginLink = document.getElementById("loginLink");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginLink.textContent = "Logout";
+    loginLink.onclick = () => { signOut(auth).then(() => location.reload()); };
+  } else {
+    loginLink.textContent = "Login";
+  }
+});
+</script>
+
+</body>
+</html>
